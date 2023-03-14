@@ -4,7 +4,7 @@ import pytest
 from Models.POM.HomePage import HomePage
 
 #pip install pytest-xdist
-#run: pytest .\1_GetStarted.py --headed --numprocesses auto
+#run: pytest ./HPFeaturesTests.py --headed --numprocesses auto
 
 # @pytest.fixture(scope="session")
 # def browser_context_args(browser_context_args, playwright):
@@ -21,6 +21,6 @@ def test_homepage(playwright: Playwright):
     home_Page = HomePage(page)
 
     #Assert
-    expect(home_Page.p_Page).to_have_title(re.compile("Main Page"))
+    expect(home_Page.p_Page).to_have_title("Main Page")
     expect(home_Page.label_title).to_be_visible()
     expect(home_Page.label_titleDescription).to_be_visible()

@@ -8,7 +8,8 @@ import pytest
 #rerun report with result - pytest -k test_homepage_canbeopened --report=report.html --template=html1/index.html
 
 #run by name - pytest -k test_homepage_canbeopened
-def test_homepage_canbeopened(set_up):
+@pytest.mark.parametrize("login, password", [("user1", "pass1"), ("user2", "pass2")])
+def test_homepage_canbeopened(set_up, login, password):
     home_Page = set_up
 
     #Assert

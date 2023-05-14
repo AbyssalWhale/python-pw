@@ -8,15 +8,14 @@ import pytest
 #rerun report with result - pytest -k test_homepage_canbeopened --report=report.html --template=html1/index.html
 
 #run by name - pytest -k test_homepage_canbeopened
-@pytest.mark.parametrize("login", ["user1", "user2"])
-@pytest.mark.parametrize("password", ["pass1", "pass2"])
-def test_homepage_canbeopened(set_up, login, password):
+@pytest.mark.regression
+def test_homepage_canbeopened(set_up):
     home_Page = set_up
 
     #Assert
     expect(home_Page.p_Page).to_have_title(home_Page.page_title)
-    expect(home_Page.label_title).to_be_visible()
-    expect(home_Page.label_titleDescription).to_be_visible()
+    expect(home_Page.label_title_table).to_be_visible()
+    expect(home_Page.label_title_genres).to_be_visible()
 
 #pytest -m smoke - to run
 #pytest -m "not smoke" - to run

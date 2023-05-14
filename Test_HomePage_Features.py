@@ -15,8 +15,8 @@ def test_homepage_canbeopened(set_up, login, password):
 
     #Assert
     expect(home_Page.p_Page).to_have_title(home_Page.page_title)
-    expect(home_Page.label_title).to_be_visible()
-    expect(home_Page.label_titleDescription).to_be_visible()
+    expect(home_Page.label_title_table).to_be_visible()
+    expect(home_Page.label_title_genres).to_be_visible()
 
 #pytest -m smoke - to run
 #pytest -m "not smoke" - to run

@@ -6,7 +6,7 @@ import pytest
 
 @pytest.fixture(scope="function")
 def set_up(playwright: Playwright):
-    browser = playwright.webkit.launch(headless=True)
+    browser = playwright.webkit.launch(headless=False, slow_mo=1000)
     page = browser.new_page()
     home_Page = HomePage(page)
 

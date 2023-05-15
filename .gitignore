@@ -130,3 +130,12 @@ dmypy.json
 api/config.py
 report.html
 report.html
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/python-pw.iml
+.idea/vcs.xml
+junit_results.xml
+py-testResults/python_tests_result_report.html
+report.html
+report.html

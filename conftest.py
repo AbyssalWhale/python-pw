@@ -15,7 +15,7 @@ authentication_key = {
 
 @pytest.fixture(scope="function")
 def set_up(playwright: Playwright):
-    browser = playwright.chromium.launch(headless=False)
+    browser = playwright.chromium.launch(headless=True)
     page = browser.new_page()
     home_page = HomePage(page)
 

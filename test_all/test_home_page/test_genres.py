@@ -12,18 +12,13 @@ def test_game_category_can_be_selected(set_up, api_request_context, game_genre_n
 
     # Arrange Gather Genre Info
     test_genre = get_genre(api_request_context=api_request_context, genre_name=game_genre_name)
-    #print(test_genre)
+    genre_games_api = get_games(api_request_context=api_request_context, genre_id=test_genre['id'])["results"]
 
     # Act - Sort on UI
     with home_page.p_Page.expect_response(f"**/api/games**&genres=**") as response_info:
             home_page.genre_component.click_genre_button(genreName=test_genre['name'])
     assert response_info.value.ok
     genre_games = response_info.value.json()
-    #print(f"All games: {genre_games['results']}")
-
-    # Retrieve and  convert games
-    genre_games_api = get_games(api_request_context=api_request_context, genre_id=test_genre['id'])["results"]
-    print(genre_games_api)
 
     # Assert
     for game in genre_games_api:

@@ -2,6 +2,8 @@ from playwright.sync_api import Page
 from Models.POM.components.Search_Component import Search_Component
 from Models.POM.components.Table_Component import Table_Component
 from .PagesBase import PageBase
+from .components.Genres_Component import Genres_Component
+
 
 class HomePage(PageBase):
 
@@ -14,3 +16,4 @@ class HomePage(PageBase):
         self.label_title_genres = self.p_Page.locator(selector="xpath=//h2[@class='chakra-heading css-14kr7y7']")
         self.search_component = Search_Component(playwrightPage=pomPage, componentTitle="Game Search")
         self.table_component = Table_Component(playwrightPage=pomPage, componentTitle="Game Table")
+        self.genre_component = Genres_Component(playwrightPage=pomPage, componentTitle="Genres List")

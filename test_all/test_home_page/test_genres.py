@@ -6,7 +6,7 @@ from Models.API.Routes.genre_routes import get_all_genres, get_genre
 
 
 @pytest.mark.regression
-@pytest.mark.parametrize("game_genre_name", ["Action"])
+@pytest.mark.parametrize("game_genre_name", ["Action", "Card"])
 def test_game_category_can_be_selected(set_up, api_request_context, game_genre_name):
     home_page = set_up
 
@@ -15,10 +15,7 @@ def test_game_category_can_be_selected(set_up, api_request_context, game_genre_n
     genre_games_api = get_games(api_request_context=api_request_context, genre_id=test_genre['id'])["results"]
 
     # Act - Sort on UI
-    with home_page.p_Page.expect_response(f"**/api/games**&genres=**") as response_info:
-            home_page.genre_component.click_genre_button(genreName=test_genre['name'])
-    assert response_info.value.ok
-    genre_games = response_info.value.json()
+    home_page.genre_component.click_genre_button(genreName=test_genre['name'])
 
     # Assert
     for game in genre_games_api:

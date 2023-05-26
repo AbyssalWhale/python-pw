@@ -5,5 +5,5 @@ on:
     branches: [ "main" ]
     
 jobs:
-  workflow_call:
+  run-tests:
     uses: AbyssalWhale/python-pw/.github/workflows/reusable-workflow.yml@AbyssalWhale-GH-Actions

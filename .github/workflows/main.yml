@@ -7,4 +7,3 @@ on:
 jobs:
   workflow_call:
     uses: AbyssalWhale/python-pw/.github/workflows/reusable-workflow.yml@AbyssalWhale-GH-Actions
-    

@@ -6,7 +6,7 @@ on:
     
 jobs:
   run-tests:
-    uses: AbyssalWhale/python-pw/.github/workflows/reusable-workflow.yml@AbyssalWhale-GH-Actions
+    uses: ./.github/workflows/reusable-workflow.yml@AbyssalWhale-GH-Actions
     permissions:
         contents: read
         issues: read

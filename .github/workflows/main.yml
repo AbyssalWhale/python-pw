@@ -6,7 +6,7 @@ on:
     
 jobs:
   run-tests:
-    uses: ./.github/workflows/reusable-workflow.yml@AbyssalWhale-GH-Actions
+    uses: ./.github/workflows/reusable-workflow.yml
     permissions:
         contents: read
         issues: read

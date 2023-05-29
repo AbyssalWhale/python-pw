@@ -46,7 +46,7 @@ jobs:
     - name: "Print out Workspace"
       run: ls ${{ github.workspace }}
     - name: "Print out passed vars"
-      run: echo ${{ env.publish-aws }} ${{ secrets.aws-key }} ${{ secrets.aws-a-key }}
+      run: echo ${{ env.publish-aws }}
     - name: Run Tests
       run: pytest ${{ github.workspace }} -m regression --junitxml=${{ env.TESTS_RESULT_DIR }}/junit_results.xml --report=${{ env.TESTS_RESULT_DIR }}/python_tests_result_report.html --template=html1/index.html -n auto
     - name: Publish Tests Results
@@ -55,3 +55,12 @@ jobs:
         check_name: Python Test Results
         files: |
           ${{ env.TESTS_RESULT_DIR }}/*.xml
+    - name: Setting AWS credentials
+      if: ${{ inputs.publish-aws == 'true' }}
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{secrets.aws-key}}
+        aws-secret-access-key: ${{secrets.aws-a-key}}
+        aws-region: eu-central-1
+    - name: Publish Python Results to S3
+      run: aws s3 sync ${{ env.TESTS_RESULT_DIR }}/ s3://awoha.xyz

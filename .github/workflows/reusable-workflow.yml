@@ -20,7 +20,7 @@ jobs:
     - name: Checkout Tests
       uses: actions/checkout@v2
       with:
-        path: './python-tests/'
+        path: $GITHUB_WORKSPACE
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
@@ -33,7 +33,7 @@ jobs:
         python -m playwright install
         npx playwright install-deps
     - name: Run Tests
-      run: pytest './python-tests/' -m regression --junitxml=./python-tests/testResults/junit_results.xml --report=./python-tests/testResults/python_tests_result_report.html --template=html1/index.html -n auto
+      run: pytest $GITHUB_WORKSPACE -m regression --junitxml=./python-tests/testResults/junit_results.xml --report=./python-tests/testResults/python_tests_result_report.html --template=html1/index.html -n auto
     - name: Publish Tests Results
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0 
       with:

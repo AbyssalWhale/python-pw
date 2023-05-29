@@ -10,6 +10,8 @@ jobs:
     with:
         publish-aws: true
     secrets:
+        aws-bucket-region: "default"
+        aws-bucket: "default"
         aws-key: "secret key"
         aws-a-key: "secret a key"
     permissions:

@@ -43,4 +43,4 @@ jobs:
       with:
         check_name: Python Test Results
         files: |
-          ${{ github.TESTS_RESULT_DIR }}/*.xml
+          ${{ env.TESTS_RESULT_DIR }}/*.xml

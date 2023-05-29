@@ -3,11 +3,13 @@ name: Reusable workflow
 on:
   workflow_call:
     inputs:
-      publich-aws:
+      publish-aws:
         required: true
         type: boolean
     secrets:
-      token:
+      aws-key:
+        required: true
+      aws-a-key:
         required: true
 
 jobs:

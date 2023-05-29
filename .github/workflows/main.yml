@@ -7,6 +7,13 @@ on:
 jobs:
   run-tests:
     uses: ./.github/workflows/reusable-workflow.yml
+    with:
+        publish-aws: false
+    secrets:
+        aws-bucket-region: "default"
+        aws-bucket: "default"
+        aws-key: "secret key"
+        aws-a-key: "secret a key"
     permissions:
         contents: read
         issues: read

@@ -67,4 +67,5 @@ jobs:
         aws-secret-access-key: ${{secrets.aws-a-key}}
         aws-region: ${{secrets.aws-bucket-region}}
     - name: Publish Python Results to S3
+      if: ${{ inputs.publish-aws == 'true' }}
       run: aws s3 sync ${{ env.tests_result_dir }}/ ${{secrets.aws-bucket}}

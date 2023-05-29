@@ -8,7 +8,7 @@ jobs:
   run-tests:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
-        publish-aws: true
+        publish-aws: false
     secrets:
         aws-bucket-region: "default"
         aws-bucket: "default"

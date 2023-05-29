@@ -9,6 +9,7 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
         publish-aws: true
+    secrets:
         aws-key: "secret key"
         aws-a-key: "secret a key"
     permissions:

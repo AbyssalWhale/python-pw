@@ -58,7 +58,7 @@ jobs:
         echo "-Check out content-"
         ls ${{ inputs.check-out-path }}
     - name: Run Tests
-      run: pytest ${{ github.workspace }} -m regression --junitxml=${{ env.tests_result_dir }}/junit_results.xml --report=${{ env.tests_result_dir }}/python_tests_result_report.html --template=html1/index.html -n auto
+      run: pytest ${{ inputs.check-out-path }} -m regression --junitxml=${{ env.tests_result_dir }}/junit_results.xml --report=${{ env.tests_result_dir }}/python_tests_result_report.html --template=html1/index.html -n auto
     - name: Publish Tests Results
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0 
       with:

@@ -45,6 +45,8 @@ jobs:
         npx playwright install-deps
     - name: "Print out Workspace"
       run: ls ${{ github.workspace }}
+    - name: "Print out passed vars"
+      run: echo ${{ env.publish-aws }} ${{ secrets.aws-key }} ${{ secrets.aws-a-key }}
     - name: Run Tests
       run: pytest ${{ github.workspace }} -m regression --junitxml=${{ env.TESTS_RESULT_DIR }}/junit_results.xml --report=${{ env.TESTS_RESULT_DIR }}/python_tests_result_report.html --template=html1/index.html -n auto
     - name: Publish Tests Results

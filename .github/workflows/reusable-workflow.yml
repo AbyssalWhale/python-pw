@@ -35,10 +35,10 @@ jobs:
     - name: "Print out Workspace"
       run: ls ${{ github.workspace }}
     - name: Run Tests
-      run: pytest ${{ github.workspace }} -m regression --junitxml=./python-tests/testResults/junit_results.xml --report=./python-tests/testResults/python_tests_result_report.html --template=html1/index.html -n auto
+      run: pytest ${{ github.workspace }} -m regression --junitxml=${{ github.workspace }}/testResults/junit_results.xml --report=${{ github.workspace }}/testResults/python_tests_result_report.html --template=html1/index.html -n auto
     - name: Publish Tests Results
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0 
       with:
         check_name: Python Test Results
         files: |
-          ./python-tests/testResults/*.xml
+          ${{ github.workspace }}/testResults/*.xml

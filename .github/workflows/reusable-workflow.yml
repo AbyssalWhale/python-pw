@@ -7,6 +7,10 @@ on:
         required: true
         type: boolean
     secrets:
+      aws-bucket-region:
+        required: true
+      aws-bucket:
+        required: true
       aws-key:
         required: true
       aws-a-key:
@@ -16,7 +20,7 @@ jobs:
   pytests:
     name: Python Test
     env:
-      TESTS_RESULT_DIR: ${{ github.workspace }}/testResults
+      tests_result_dir: ${{ github.workspace }}/testResults
     runs-on: ubuntu-latest
     permissions:
         contents: read
@@ -43,24 +47,24 @@ jobs:
       run: | 
         python -m playwright install
         npx playwright install-deps
-    - name: "Print out Workspace"
-      run: ls ${{ github.workspace }}
-    - name: "Print out passed vars"
-      run: echo ${{ toJSON(inputs.publish-aws) }}
+    - name: "Print out vars"
+      run: |
+        echo "Publish to AWS: ${{ toJSON(inputs.publish-aws) }}"
+        ls ${{ github.workspace }}
     - name: Run Tests
-      run: pytest ${{ github.workspace }} -m regression --junitxml=${{ env.TESTS_RESULT_DIR }}/junit_results.xml --report=${{ env.TESTS_RESULT_DIR }}/python_tests_result_report.html --template=html1/index.html -n auto
+      run: pytest ${{ github.workspace }} -m regression --junitxml=${{ env.tests_result_dir }}/junit_results.xml --report=${{ env.tests_result_dir }}/python_tests_result_report.html --template=html1/index.html -n auto
     - name: Publish Tests Results
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0 
       with:
         check_name: Python Test Results
         files: |
-          ${{ env.TESTS_RESULT_DIR }}/*.xml
+          ${{ env.tests_result_dir }}/*.xml
     - name: Setting AWS credentials
       if: ${{ inputs.publish-aws == 'true' }}
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{secrets.aws-key}}
         aws-secret-access-key: ${{secrets.aws-a-key}}
-        aws-region: eu-central-1
+        aws-region: ${{secrets.aws-bucket-region}}
     - name: Publish Python Results to S3
-      run: aws s3 sync ${{ env.TESTS_RESULT_DIR }}/ s3://awoha.xyz
+      run: aws s3 sync ${{ env.tests_result_dir }}/ ${{secrets.aws-bucket}}

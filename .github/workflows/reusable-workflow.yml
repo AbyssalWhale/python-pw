@@ -62,7 +62,7 @@ jobs:
     - name: 🧪 Python Playwright Tests Results
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0 
       with:
-        check_name: Python Test Results
+        check_name: 🧪 Python Playwright Test Results
         files: |
           ${{ env.tests_result_dir }}/*.xml
     - name: 🔧 Setting AWS credentials

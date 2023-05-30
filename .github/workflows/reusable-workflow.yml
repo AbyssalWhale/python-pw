@@ -21,9 +21,8 @@ on:
 
 jobs:
   pytests:
-    name: Python Test
+    name: 🔻⏭️🔧⏭️ 🕵️‍♀️ ⏭️ 🧪 
     env:
-      #github.workspace
       tests_result_dir: ${{ inputs.check-out-path }}/testResults
     runs-on: ubuntu-latest
     permissions:
@@ -32,47 +31,47 @@ jobs:
         checks: write
         pull-requests: write
     steps:
-    - name: Set Up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    - name: Checkout Tests
+    - name: 🔻 Checkout Tests
       uses: actions/checkout@v2
       with:
         repository: AbyssalWhale/python-pw
         path: ${{ inputs.check-out-path }}
-    - name: Install Dependencies
+    - name: 🔧 Set Up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: 🔧 Install Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest-playwright
         pip install pytest-reporter-html1
         pip install pytest-xdist
         python -m pip install playwright
-    - name: Install playwright browsers
+    - name: 🔧 Install Playwright
       run: | 
         python -m playwright install
         npx playwright install-deps
-    - name: "Print out vars"
+    - name: 🔧 Print out vars
       run: |
         echo "Publish to AWS: ${{ toJSON(inputs.publish-aws) }}"
         echo "Check out path: ${{ toJSON(inputs.check-out-path) }}"
         echo "-Check out content-"
         ls ${{ inputs.check-out-path }}
-    - name: Run Tests
+    - name: 🕵️‍♀️ Run Tests
       run: pytest ${{ inputs.check-out-path }} -m regression --junitxml=${{ env.tests_result_dir }}/junit_results.xml --report=${{ env.tests_result_dir }}/python_tests_result_report.html --template=html1/index.html -n auto
-    - name: Publish Tests Results
+    - name: 🧪 Python Playwright Tests Results
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0 
       with:
-        check_name: Python Test Results
+        check_name: 🧪 Python Playwright Test Results
         files: |
           ${{ env.tests_result_dir }}/*.xml
-    - name: Setting AWS credentials
+    - name: 🔧 Setting AWS credentials
       if: ${{ inputs.publish-aws == true }}
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{secrets.aws-key}}
         aws-secret-access-key: ${{secrets.aws-a-key}}
         aws-region: ${{secrets.aws-bucket-region}}
-    - name: Publish Python Results to S3
+    - name: 🧪 Publish Python Results to S3
       if: ${{ inputs.publish-aws == true }}
       run: aws s3 sync ${{ env.tests_result_dir }}/ ${{secrets.aws-bucket}}

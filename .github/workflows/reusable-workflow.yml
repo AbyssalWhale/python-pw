@@ -67,12 +67,12 @@ jobs:
         files: |
           ${{ env.tests_result_dir }}/*.xml
     - name: Setting AWS credentials
-      if: ${{ inputs.publish-aws == 'true' }}
+      if: ${{ inputs.publish-aws == true }}
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{secrets.aws-key}}
         aws-secret-access-key: ${{secrets.aws-a-key}}
         aws-region: ${{secrets.aws-bucket-region}}
     - name: Publish Python Results to S3
-      if: ${{ inputs.publish-aws == 'true' }}
+      if: ${{ inputs.publish-aws == true }}
       run: aws s3 sync ${{ env.tests_result_dir }}/ ${{secrets.aws-bucket}}

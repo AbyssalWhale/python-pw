@@ -6,6 +6,7 @@ on:
     
 jobs:
   run-tests:
+    name: 🐍 Python Playwright
     uses: ./.github/workflows/reusable-workflow.yml
     with:
         check-out-path: ./py-playwright

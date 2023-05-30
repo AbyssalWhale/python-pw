@@ -9,7 +9,7 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
         check-out-path: ./py-playwright
-        publish-aws: true
+        publish-aws: false
     secrets:
         aws-bucket-region: "default"
         aws-bucket: "default"

@@ -16,7 +16,7 @@ jobs:
         aws-bucket: "default"
         aws-key: "secret key"
         aws-a-key: "secret a key"
-        instance-backend-api-key: ${{secrets.RAWG_KEY}}
+        instance-backend-api-key: ${{ secrets.RAWG_KEY }}
     permissions:
         contents: read
         issues: read

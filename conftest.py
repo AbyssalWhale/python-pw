@@ -14,7 +14,7 @@ def set_up(playwright: Playwright):
     with open(f'{sys.path[1]}\\..\\configs\\api_headers.json') as f:
         conftest.test_run_config = json.load(f)
 
-    browser = playwright.chromium.launch(headless=False)
+    browser = playwright.chromium.launch(headless=True)
     page = browser.new_page()
     home_page = HomePage(page)
 

@@ -11,7 +11,7 @@ test_run_config = None
 
 @pytest.fixture(scope="function")
 def set_up(playwright: Playwright):
-    with open(f'{sys.path[1]}\\..\\configs\\api_headers.json') as f:
+    with open(f'{sys.path[1]}//..//configs//api_headers.json') as f:
         conftest.test_run_config = json.load(f)
 
     browser = playwright.chromium.launch(headless=True)

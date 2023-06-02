@@ -1,21 +1,20 @@
-import re
 from playwright.sync_api import Playwright, Page, expect
-import pytest
+import conftest
 from Models.POM.HomePage import HomePage
-import pytest
-import os
 from typing import Generator
-
+import json
+import sys
 import pytest
 from playwright.sync_api import Playwright, APIRequestContext
 
-authentication_key = {
-        "key": "358f8b7b728544ccaa65398ebeebecdf",
-    }
+test_run_config = None
 
 @pytest.fixture(scope="function")
 def set_up(playwright: Playwright):
-    browser = playwright.chromium.launch(headless=True)
+    with open(f'{sys.path[1]}\\..\\configs\\api_headers.json') as f:
+        conftest.test_run_config = json.load(f)
+
+    browser = playwright.chromium.launch(headless=False)
     page = browser.new_page()
     home_page = HomePage(page)
 

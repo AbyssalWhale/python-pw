@@ -1,9 +1,7 @@
-from conftest import authentication_key
-
+import conftest
 
 def get_games(api_request_context, genre_id=None, assert_response_code=True):
-
-    headers_local = authentication_key
+    headers_local = conftest.test_run_config
     if genre_id is not None:
         headers_local.update({"genres": genre_id})
 

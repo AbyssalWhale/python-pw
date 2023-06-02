@@ -139,3 +139,5 @@ junit_results.xml
 py-testResults/python_tests_result_report.html
 report.html
 report.html
+
+py-testResults/

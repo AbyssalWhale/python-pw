@@ -12,6 +12,7 @@ jobs:
         check-out-path: ./py-playwright
         publish-aws: false
     secrets:
+        instance-backend-api-key: ${{secrets.RAWG_KEY}}
         aws-bucket-region: "default"
         aws-bucket: "default"
         aws-key: "secret key"

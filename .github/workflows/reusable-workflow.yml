@@ -10,6 +10,8 @@ on:
         required: true
         type: boolean
     secrets:
+      instance-backend-api-key:
+        required: true
       aws-bucket-region:
         required: true
       aws-bucket:
@@ -17,8 +19,6 @@ on:
       aws-key:
         required: true
       aws-a-key:
-        required: true
-      instance-backend-api-key:
         required: true
 
 jobs:

@@ -1,5 +1,7 @@
 import re
 from playwright.sync_api import Playwright, Page, expect
+
+import conftest
 from Models.POM.HomePage import HomePage
 import pytest
 
@@ -12,7 +14,7 @@ import pytest
 # pytest -m "not smoke" - to not run
 @pytest.mark.regression
 def test_homepage_can_be_opened(set_up):
-    home_page = set_up
+    home_page = conftest.home_page
 
     # Assert
     expect(home_page.p_Page).to_have_title(home_page.page_title)

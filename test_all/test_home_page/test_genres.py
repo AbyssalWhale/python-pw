@@ -1,5 +1,7 @@
 import pytest
 from playwright.sync_api import expect
+
+import conftest
 from Models.API.Routes.games_routes import get_games
 from Models.API.Routes.genre_routes import get_genre
 
@@ -7,11 +9,11 @@ from Models.API.Routes.genre_routes import get_genre
 @pytest.mark.regression
 @pytest.mark.parametrize("game_genre_name", ["Action", "Card"])
 def test_game_category_can_be_selected(set_up, api_request_context, game_genre_name):
-    home_page = set_up
+    home_page = conftest.home_page
 
     # Arrange Gather Genre Info
-    test_genre = get_genre(api_request_context=api_request_context, genre_name=game_genre_name)
-    genre_games_api = get_games(api_request_context=api_request_context, genre_id=test_genre['id'])["results"]
+    test_genre = get_genre(genre_name=game_genre_name)
+    genre_games_api = get_games(genre_id=test_genre['id'])["results"]
 
     # Act - Sort on UI
     home_page.genre_component.click_genre_button(genreName=test_genre['name'])

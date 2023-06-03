@@ -10,5 +10,5 @@ class Search_Component(ComponentBase):
         self.p_Page.input_search_game = self.p_Page.locator("//input[@placeholder='Search games...']")
         self.p_Page.input_search_game.fill(gameName)
         self.p_Page.input_search_game.press("Enter")
-        self.p_Page.wait_for_load_state()
+        self.p_Page.wait_for_load_state("domcontentloaded")
         return self

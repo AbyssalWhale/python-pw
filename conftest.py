@@ -16,7 +16,7 @@ api_request_context = None
 def set_up(playwright: Playwright):
     _read_api_header()
 
-    browser = playwright.chromium.launch(headless=False)
+    browser = playwright.chromium.launch(headless=True)
     page = browser.new_page()
     home_page = HomePage(page)
 

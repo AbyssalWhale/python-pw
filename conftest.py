@@ -66,7 +66,6 @@ def get_project_root():
     while not os.path.isfile(os.path.join(current_dir, 'conftest.py')):
         parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
         if parent_dir == current_dir:
-            # Reached the root directory without finding the project marker file
             raise Exception("Could not find project root directory.")
         current_dir = parent_dir
     return current_dir

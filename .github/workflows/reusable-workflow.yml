@@ -33,6 +33,8 @@ jobs:
         checks: write
         pull-requests: write
     steps:
+    - name: Record and deploy the animation
+      uses: cyberbotics/webots-animation-action@master
     - name: 🔻 Checkout Tests
       uses: actions/checkout@v2
       with:

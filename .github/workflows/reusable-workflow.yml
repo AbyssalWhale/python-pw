@@ -65,7 +65,8 @@ jobs:
          ${{ inputs.check-out-path }}\.pshell\generateApiHeaders.ps1 ${{ inputs.check-out-path }} ${{ secrets.instance-backend-api-key }}
     - name: 🕵️‍♀️ Run Tests
       run: pytest ${{ inputs.check-out-path }} -m regression --junitxml=${{ env.tests_result_dir }}/junit_results.xml --report=${{ env.tests_result_dir }}/python_tests_result_report.html --template=html1/index.html -n auto
-    - name: 🧪 Python Playwright Tests Results
+    - name: 🔧 Publish Python Playwright Tests Results
+      if: always()
       uses: EnricoMi/publish-unit-test-result-action@v2.7.0 
       with:
         check_name: 🧪 Python Playwright Test Results
@@ -78,6 +79,6 @@ jobs:
         aws-access-key-id: ${{secrets.aws-key}}
         aws-secret-access-key: ${{secrets.aws-a-key}}
         aws-region: ${{secrets.aws-bucket-region}}
-    - name: 🧪 Publish Python Results to S3
+    - name: 🔧 Publish Python Results to S3
       if: ${{ inputs.publish-aws == true }}
       run: aws s3 sync ${{ env.tests_result_dir }}/ ${{secrets.aws-bucket}}

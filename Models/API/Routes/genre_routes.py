@@ -1,16 +1,18 @@
 import conftest
 
-def get_all_genres(api_request_context, assert_response_code=True):
+
+def get_all_genres(assert_response_code=True):
     headers_local = conftest.test_run_config
-    response = api_request_context.get("genres", params=headers_local)
+    response = conftest.api_request_context.get("genres", params=headers_local)
     if assert_response_code:
         assert response.ok
     result = response.json()
 
     return result
 
-def get_genre(api_request_context, genre_name: str):
-    all_genres = get_all_genres(api_request_context)["results"]
+
+def get_genre(genre_name: str):
+    all_genres = get_all_genres()["results"]
     result = None
 
     for genre in all_genres:

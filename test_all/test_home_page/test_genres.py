@@ -5,7 +5,6 @@ import conftest
 from Models.API.Routes.games_routes import get_games
 from Models.API.Routes.genre_routes import get_genre
 
-
 @pytest.mark.regression
 @pytest.mark.parametrize("game_genre_name", ["Action", "Card"])
 def test_game_category_can_be_selected(set_up, api_request_context, game_genre_name):

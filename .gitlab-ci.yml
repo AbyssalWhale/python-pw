@@ -1,0 +1,34 @@
+stages:          # List of stages for jobs, and their order of execution
+  - test
+
+python-playwright-tests:   # This job runs in the test stage.
+  stage: test    # It only starts when the job in the build stage completes successfully.
+  image: ubuntu:latest
+  script:
+    - apt-get update
+    - apt install python-is-python3 -y
+    - apt install python3-pip -y
+    - pip install flake8 pytest-playwright
+    - pip install pytest-reporter-html1
+    - pip install pytest-xdist
+    - python -m pip install playwright
+    - python -m playwright install
+    - apt install nodejs -y
+    - apt install npm -y
+    - npx playwright install-deps
+    - echo "-!!!!! PRINT OUT PYTHON-PW !!!!!-"
+    - ls "/builds/AbyssalWhale/python-pw/.pshell"
+    - echo "-!!!!! INSTAL PWSH !!!!!-"
+    - apt update  && apt install -y curl gnupg apt-transport-https
+    - curl https://packages.microsoft.com/keys/microsoft.asc | gpg --yes --dearmor --output /usr/share/keyrings/microsoft.gpg
+    - sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/microsoft-debian-bullseye-prod bullseye main" > /etc/apt/sources.list.d/microsoft.list'
+    - apt update && apt install -y powershell
+    - pwsh
+    - chmod u=rwx /builds/AbyssalWhale/python-pw/.pshell/generateApiHeaders.ps1
+    - pwsh /builds/AbyssalWhale/python-pw/.pshell/generateApiHeaders.ps1 "/builds/AbyssalWhale/python-pw/" "$RAWG_KEY"
+    - pytest /builds/AbyssalWhale/python-pw/test_all/ -m regression --junitxml=junit_results.xml --report=/builds/AbyssalWhale/python-pw/testResults/python_tests_result_report.html --template=html1/index.html -n auto
+  artifacts:
+      when: always 
+      reports:
+          junit: junit_results.xml
+          

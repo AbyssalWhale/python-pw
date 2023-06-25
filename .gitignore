@@ -142,3 +142,7 @@ report.html
 
 py-testResults/
 configs/
+TestResults/
+python_tests_result_report.html
+report.html
+report.html

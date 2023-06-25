@@ -2,22 +2,35 @@ import conftest
 from Models.POM.HomePage import HomePage
 from typing import Generator
 import json
-import pytest
 import os
 from playwright.sync_api import expect
 from playwright.sync_api import Playwright, APIRequestContext
+from datetime import datetime
+import pytest
+
 
 test_run_config = None
+test_run_content_folder = None
 api_request_context = None
 home_page = None
-api_request_context = None
+
+
+@pytest.fixture(scope="session", autouse=True)
+def one_time_set_up():
+    _read_api_header()
+    conftest.test_run_content_folder = get_project_root() + '\\TestResults\\' + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    if not os.path.exists(conftest.test_run_content_folder):
+         os.makedirs(conftest.test_run_content_folder)
 
 @pytest.fixture(scope="session")
-def set_up(playwright: Playwright):
-    _read_api_header()
-
+def set_up(one_time_set_up, playwright: Playwright):
     browser = playwright.chromium.launch(headless=True)
-    page = browser.new_page()
+    context = browser.new_context(
+        record_video_dir=f"{conftest.test_run_content_folder}/",
+        record_video_size={"width": 640, "height": 480}
+    )
+
+    page = context.new_page()
     home_page = HomePage(page)
 
     expect(home_page.p_Page).to_have_title(home_page.page_title)
@@ -29,6 +42,8 @@ def set_up(playwright: Playwright):
     yield conftest.home_page
 
     conftest.home_page.p_Page.close()
+    context.close()
+    print(f"Video Record: {page.video.path()}")
 
 
 @pytest.fixture(scope="session")

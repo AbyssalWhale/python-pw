@@ -8,6 +8,7 @@ python-playwright-tests:   # This job runs in the test stage.
     - apt-get update
     - apt install python-is-python3 -y
     - apt install python3-pip -y
+    - pip install --upgrade -r requirements.txt
     - pip install flake8 pytest-playwright
     - pip install pytest-reporter-html1
     - pip install pytest-xdist

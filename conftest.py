@@ -1,13 +1,14 @@
 import conftest
 from Models.POM.HomePage import HomePage
 from typing import Generator
-import json
-import os
 from playwright.sync_api import expect
 from playwright.sync_api import Playwright, APIRequestContext
 from datetime import datetime
 import pytest
-
+import aiofiles
+import json
+import allure
+import os
 
 test_run_config = None
 test_run_content_folder = None
@@ -18,9 +19,11 @@ home_page = None
 @pytest.fixture(scope="session", autouse=True)
 def one_time_set_up():
     _read_api_header()
-    conftest.test_run_content_folder = get_project_root() + '\\TestResults\\' + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    conftest.test_run_content_folder = get_project_root() + '\\TestResults\\' + datetime.now().strftime(
+        "%Y-%m-%d_%H-%M-%S")
     if not os.path.exists(conftest.test_run_content_folder):
-         os.makedirs(conftest.test_run_content_folder)
+        os.makedirs(conftest.test_run_content_folder)
+
 
 @pytest.fixture(scope="session")
 def set_up(one_time_set_up, playwright: Playwright):
@@ -54,6 +57,7 @@ def api_request_context(playwright: Playwright) -> Generator[APIRequestContext, 
     yield conftest.api_request_context
     request_context.dispose()
 
+
 def _init_Home_Page(playwright: Playwright):
     browser = playwright.chromium.launch(headless=False)
     page = browser.new_page()
@@ -66,6 +70,7 @@ def _init_Home_Page(playwright: Playwright):
     home_page = home_page
 
     yield home_page
+
 
 def _read_api_header():
     full_File_Path = f'{get_project_root()}//configs//api_headers.json'
@@ -84,3 +89,36 @@ def get_project_root():
             raise Exception("Could not find project root directory.")
         current_dir = parent_dir
     return current_dir
+
+
+class Fixtures:
+    @allure.title("One Time SetUp")
+    @pytest.fixture(scope="session", autouse=True)
+    async def one_time_setup(self):
+        with allure.step("reading config"):
+            proj_path = await self.__get_project_root()
+            config_path = os.path.join(proj_path, "configs", "test-run-config.json")
+            self.test_run_config = await self.__read_from_json(filepath=config_path)
+
+        return self
+
+    async def __read_from_json(self, filepath):
+        async with aiofiles.open(filepath, mode='r') as file:
+            data = await file.read()
+            return json.loads(data)
+
+    async def __get_project_root(self):
+        current_dir = os.path.abspath(os.path.dirname(__file__))
+        while not os.path.isfile(os.path.join(current_dir, 'conftest.py')):
+            parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
+            if parent_dir == current_dir:
+                raise Exception("Could not find project root directory.")
+            current_dir = parent_dir
+        return current_dir
+
+
+class TestSamples(Fixtures):
+    @pytest.mark.asyncio
+    async def test_example(self, one_time_setup):
+        ots = await one_time_setup
+        print(ots.test_run_config)

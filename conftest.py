@@ -100,7 +100,8 @@ class Fixtures:
             config_path = os.path.join(proj_path, "configs", "test-run-config.json")
             self.test_run_config = await self.__read_from_json(filepath=config_path)
         with allure.step("create test result dir"):
-            self.test_results_dir = os.path.join(proj_path, "TestResults", datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+            #self.test_results_dir = os.path.join(proj_path, "TestResults", datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+            self.test_results_dir = os.path.join(proj_path, "TempTestResults", datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
             if not os.path.exists(self.test_results_dir):
                 os.makedirs(self.test_results_dir)
 

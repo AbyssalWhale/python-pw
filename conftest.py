@@ -122,8 +122,8 @@ class Fixtures:
         return current_dir
 
 
-# class TestSamples(Fixtures):
-#     @pytest.mark.asyncio
-#     async def test_example(self, one_time_setup):
-#         ots = await one_time_setup
-#         print(ots.test_run_config)
+class TestSamples(Fixtures):
+    @pytest.mark.asyncio
+    async def test_example(self, one_time_setup):
+        ots = await one_time_setup
+        print(ots.test_run_config)

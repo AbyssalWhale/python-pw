@@ -3,6 +3,7 @@ from Models.POM.HomePage import HomePage
 from typing import Generator
 from playwright.sync_api import expect
 from playwright.sync_api import Playwright, APIRequestContext
+from playwright.async_api import async_playwright
 from datetime import datetime
 import pytest
 import aiofiles
@@ -101,9 +102,21 @@ class Fixtures:
             self.test_run_config = await self.__read_from_json(filepath=config_path)
         with allure.step("create test result dir"):
             #self.test_results_dir = os.path.join(proj_path, "TestResults", datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
-            self.test_results_dir = os.path.join(proj_path, "TempTestResults", datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+            self.test_results_dir = os.path.join(proj_path, "Temp_TestResults", datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
             if not os.path.exists(self.test_results_dir):
                 os.makedirs(self.test_results_dir)
+
+        return self
+
+    @allure.title("Home Page Set Up")
+    @pytest.fixture(scope="session", autouse=False)
+    async def set_up_home_page(self, one_time_setup):
+        self.one_time_setup = await one_time_setup
+        with allure.step("init playwright"):
+            async with async_playwright() as playwright:
+                browser = await playwright.chromium.launch(headless=False)
+                page = await browser.new_page()
+                await page.goto(url="https://www.google.com/")
 
         return self
 
@@ -124,6 +137,6 @@ class Fixtures:
 
 class TestSamples(Fixtures):
     @pytest.mark.asyncio
-    async def test_example(self, one_time_setup):
-        ots = await one_time_setup
+    async def test_example(self, set_up_home_page):
+        ots = await set_up_home_page
         print(ots.test_run_config)

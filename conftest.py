@@ -11,13 +11,15 @@ import json
 import allure
 import os
 
+from Models.POM.HomePage_a import HomePageA
+
 test_run_config = None
 test_run_content_folder = None
 api_request_context = None
 home_page = None
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session", autouse=False)
 def one_time_set_up():
     _read_api_header()
     conftest.test_run_content_folder = get_project_root() + '\\TestResults\\' + datetime.now().strftime(
@@ -113,10 +115,14 @@ class Fixtures:
     async def set_up_home_page(self, one_time_setup):
         self.one_time_setup = await one_time_setup
         with allure.step("init playwright"):
-            async with async_playwright() as playwright:
-                browser = await playwright.chromium.launch(headless=False)
-                page = await browser.new_page()
-                await page.goto(url="https://www.google.com/")
+            self.playwright = await async_playwright().start()
+            self.browser = await self.playwright.firefox.launch(headless=False)
+            self.context = await self.browser.new_context()
+            self.page = await self.context.new_page()
+        with allure.step("init Home Page"):
+            self.home_page = HomePageA(p_page=self.page)
+            await self.home_page.open_and_check_load()
+
 
         return self
 

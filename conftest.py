@@ -19,7 +19,7 @@ api_request_context = None
 home_page = None
 
 
-@pytest.fixture(scope="session", autouse=False)
+@pytest.fixture(scope="session", autouse=True)
 def one_time_set_up():
     _read_api_header()
     conftest.test_run_content_folder = get_project_root() + '\\TestResults\\' + datetime.now().strftime(

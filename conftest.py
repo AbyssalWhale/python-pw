@@ -19,7 +19,7 @@ api_request_context = None
 home_page = None
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session", autouse=False)
 def one_time_set_up():
     _read_api_header()
     conftest.test_run_content_folder = get_project_root() + '\\TestResults\\' + datetime.now().strftime(
@@ -126,6 +126,16 @@ class Fixtures:
 
         return self
 
+
+    @allure.title("Rest API Set Up")
+    @pytest.fixture(scope="session", autouse=False)
+    async def set_up_api(self, one_time_setup):
+        with allure.step("init playwright"):
+            self.playwright = await async_playwright().start()
+            self.playwright_request_context = self.playwright.request.new_context(base_url="https://api.rawg.io/api/")
+            self.temp = "!!!! Hello from Rest API set up"
+        return self
+
     async def __read_from_json(self, filepath):
         async with aiofiles.open(filepath, mode='r') as file:
             data = await file.read()
@@ -143,6 +153,8 @@ class Fixtures:
 
 class TestSamples(Fixtures):
     @pytest.mark.asyncio
-    async def test_example(self, set_up_home_page):
-        ots = await set_up_home_page
-        print(ots.test_run_config)
+    async def test_example(self, set_up_home_page, set_up_api):
+        self.set_up_home_page = await set_up_home_page
+        self.set_up_api = await set_up_api
+        print(self.set_up_home_page)
+        print(self.set_up_api.temp)

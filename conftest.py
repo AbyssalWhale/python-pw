@@ -122,6 +122,7 @@ class Fixtures:
         with allure.step("init Home Page"):
             self.home_page = HomePageA(p_page=self.page)
             await self.home_page.open_and_check_load()
+            await self.home_page.assert_is_page_loaded()
 
 
         return self

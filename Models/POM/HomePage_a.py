@@ -1,4 +1,5 @@
 from playwright.async_api import Page
+from playwright.async_api import expect
 from Models.POM.PageBase_a import PageBaseA
 from Models.POM.components.genres_component_a import GenresComponent
 from Models.POM.components.search_component_a import SearchComponent
@@ -14,6 +15,11 @@ class HomePageA(PageBaseA):
     async def open_and_check_load(self):
         await self.p_page.goto(self.url)
         await self._initialize_components()
+
+    async def assert_is_page_loaded(self):
+        await expect(self.p_page).to_have_title(self.page_title)
+        await expect(self._label_title_table).to_be_visible()
+        await expect(self._label_title_genres).to_be_visible()
 
     async def _initialize_components(self):
         self._label_title_table = self.p_page.locator(selector="//h1[@class='chakra-heading css-r90ria']")

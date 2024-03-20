@@ -76,7 +76,7 @@ def _init_Home_Page(playwright: Playwright):
 
 
 def _read_api_header():
-    full_File_Path = f'{get_project_root()}//configs//api-headers.json'
+    full_File_Path = f'{get_project_root()}//configs//api_headers.json'
     if os.path.exists(full_File_Path):
         with open(full_File_Path) as f:
             conftest.test_run_config = json.load(f)
@@ -139,7 +139,7 @@ class Fixtures:
             self.playwright_request_context = await browser.new_context(base_url="https://api.rawg.io/api/")
             self.api_request_context = self.playwright_request_context.request
             proj_path = await self.__get_project_root()
-            api_headers_path = os.path.join(proj_path, "configs", "api-headers.json")
+            api_headers_path = os.path.join(proj_path, "configs", "api_headers.json")
             self.api_headers = await self.__read_from_json(api_headers_path)
         return self
 

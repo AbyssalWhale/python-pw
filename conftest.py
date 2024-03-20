@@ -76,7 +76,7 @@ def _init_Home_Page(playwright: Playwright):
 
 
 def _read_api_header():
-    full_File_Path = f'{get_project_root()}//configs//api_headers.json'
+    full_File_Path = f'{get_project_root()}//configs//api-headers.json'
     if os.path.exists(full_File_Path):
         with open(full_File_Path) as f:
             conftest.test_run_config = json.load(f)
@@ -95,16 +95,19 @@ def get_project_root():
 
 
 class Fixtures:
+
+    one_time_set_up = None
+
     @allure.title("One Time SetUp")
     @pytest.fixture(scope="session", autouse=True)
     async def one_time_setup(self):
         with allure.step("reading config"):
-            proj_path = await self.__get_project_root()
-            config_path = os.path.join(proj_path, "configs", "test-run-config.json")
+            self.proj_path = await self.__get_project_root()
+            config_path = os.path.join(self.proj_path, "configs", "test-run-config.json")
             self.test_run_config = await self.__read_from_json(filepath=config_path)
         with allure.step("create test result dir"):
             #self.test_results_dir = os.path.join(proj_path, "TestResults", datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
-            self.test_results_dir = os.path.join(proj_path, "Temp_TestResults", datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+            self.test_results_dir = os.path.join(self.proj_path, "Temp_TestResults", datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
             if not os.path.exists(self.test_results_dir):
                 os.makedirs(self.test_results_dir)
 
@@ -113,7 +116,6 @@ class Fixtures:
     @allure.title("Home Page Set Up")
     @pytest.fixture(scope="session", autouse=False)
     async def set_up_home_page(self, one_time_setup):
-        self.one_time_setup = await one_time_setup
         with allure.step("init playwright"):
             self.playwright = await async_playwright().start()
             self.browser = await self.playwright.firefox.launch(headless=False)
@@ -130,11 +132,15 @@ class Fixtures:
 
     @allure.title("Rest API Set Up")
     @pytest.fixture(scope="session", autouse=False)
-    async def set_up_api(self, one_time_setup):
+    async def set_up_api(self):
         with allure.step("init playwright"):
-            self.playwright = await async_playwright().start()
-            self.playwright_request_context = self.playwright.request.new_context(base_url="https://api.rawg.io/api/")
-            self.temp = "!!!! Hello from Rest API set up"
+            playwright = await async_playwright().start()
+            browser = await playwright.firefox.launch(headless=False)
+            self.playwright_request_context = await browser.new_context(base_url="https://api.rawg.io/api/")
+            self.api_request_context = self.playwright_request_context.request
+            proj_path = await self.__get_project_root()
+            api_headers_path = os.path.join(proj_path, "configs", "api-headers.json")
+            self.api_headers = await self.__read_from_json(api_headers_path)
         return self
 
     async def __read_from_json(self, filepath):
@@ -154,8 +160,21 @@ class Fixtures:
 
 class TestSamples(Fixtures):
     @pytest.mark.asyncio
-    async def test_example(self, set_up_home_page, set_up_api):
+    @pytest.mark.parametrize("genre_under_test", ["Action"])
+    async def test_example(self, set_up_home_page, set_up_api, genre_under_test):
         self.set_up_home_page = await set_up_home_page
         self.set_up_api = await set_up_api
-        print(self.set_up_home_page)
-        print(self.set_up_api.temp)
+        #test_game_category_can_be_selected
+        with allure.step("gather genre info"):
+            genres_response = await self.set_up_api.api_request_context.get("genres", params=self.set_up_api.api_headers)
+            assert genres_response.ok
+            genres_data = await genres_response.json()
+            genres_data = genres_data["results"]
+            genre_data = next((genre for genre in genres_data if genre['name'] == genre_under_test), None)
+        with allure.step("gather games info"):
+            params = self.set_up_api.one_time_setup.test_run_config
+            params.update({"genres": genre_data["id"]})
+            games_response = await self.set_up_api.api_request_context.get("genres", params=params)
+            assert games_response.ok
+            games_data = await games_response.json()
+            games_data = games_data["results"]

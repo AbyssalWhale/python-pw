@@ -12,6 +12,7 @@ $Body = @"
 if (-not (Test-Path $File_Path)) {
     New-Item -ItemType Directory -Path $directoryPath | Out-Null
     Write-Output "Directory created: $directoryPath"
+}
 
 Write-Host "$($File_Path)$($File_Name)"
 

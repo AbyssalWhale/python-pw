@@ -10,8 +10,8 @@ $Body = @"
 }
 "@
 if (-not (Test-Path $File_Path)) {
-    New-Item -ItemType Directory -Path $directoryPath | Out-Null
-    Write-Output "Directory created: $directoryPath"
+    New-Item -ItemType Directory -Path $File_Path | Out-Null
+    Write-Output "Directory created: $File_Path"
 }
 
 Write-Host "$($File_Path)$($File_Name)"

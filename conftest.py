@@ -116,6 +116,7 @@ class Fixtures:
     @allure.title("Home Page Set Up")
     @pytest.fixture(scope="session", autouse=False)
     async def set_up_home_page(self, one_time_setup):
+        self.one_time_setup = await one_time_setup
         with allure.step("init playwright"):
             self.playwright = await async_playwright().start()
             self.browser = await self.playwright.firefox.launch(headless=False)

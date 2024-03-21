@@ -161,8 +161,8 @@ class Fixtures:
 
 class TestSamples(Fixtures):
     @pytest.mark.asyncio
-    @pytest.mark.parametrize("genre_under_test", ["Action"])
-    async def test_example(self, set_up_home_page, set_up_api, genre_under_test):
+    async def test_example(self, set_up_home_page, set_up_api):
+        genre_under_test = "Action"
         self.set_up_home_page = await set_up_home_page
         self.set_up_api = await set_up_api
         #test_game_category_can_be_selected
@@ -179,3 +179,11 @@ class TestSamples(Fixtures):
             assert games_response.ok
             games_data = await games_response.json()
             games_data = games_data["results"]
+
+        with allure.step("sort on UI"):
+            await self.set_up_home_page.home_page.genre_component.click_genre_button(genre_name=genre_data["name"])
+        with allure.step("assert"):
+            for game in games_data:
+                actual_game_cards = await self.set_up_home_page.home_page.table_component.get_game_cards_amount(
+                    card_title=game['name'])
+                expect(actual_game_cards).to_have_count(1)

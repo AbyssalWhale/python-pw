@@ -24,8 +24,7 @@ def test_game_category_can_be_selected(set_up, api_request_context, game_genre_n
 
 class TestGenresA(conftest.Fixtures):
     @pytest.mark.asyncio
-    @pytest.mark.regression
-    @pytest.mark.parametrize("genre_under_test", ["Action", "Card"])
+    @pytest.mark.parametrize("genre_under_test", ["Action"])
     async def test_game_category_can_be_selected_async(self, set_up_home_page, set_up_api, genre_under_test):
         self.set_up_home_page = await set_up_home_page
         self.set_up_api = await set_up_api

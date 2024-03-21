@@ -103,7 +103,7 @@ class Fixtures:
     async def one_time_setup(self):
         with allure.step("reading config"):
             self.proj_path = await self.__get_project_root()
-            config_path = os.path.join(self.proj_path, "configs", "test-run-config.json")
+            config_path = os.path.join(self.proj_path, "configs", "api_headers.json")
             self.test_run_config = await self.__read_from_json(filepath=config_path)
         with allure.step("create test result dir"):
             #self.test_results_dir = os.path.join(proj_path, "TestResults", datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))

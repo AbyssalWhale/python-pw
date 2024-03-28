@@ -21,7 +21,7 @@ def one_time_set_up():
         get_project_root(),
         "TestResults")
     if not os.path.exists(conftest.test_run_content_folder):
-        os.makedirs(conftest.test_run_content_folder)
+        os.makedirs(conftest.test_run_content_folder, exist_ok=True)
 
 
 @pytest.fixture(scope="session")

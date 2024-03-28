@@ -1,8 +1,8 @@
 from playwright.sync_api import Page
-from Models.POM.components.Search_Component import Search_Component
-from Models.POM.components.Table_Component import Table_Component
-from .PagesBase import PageBase
-from .components.Genres_Component import Genres_Component
+from models.POM.components.search_component import Search_Component
+from models.POM.components.table_component import Table_Component
+from .pages_base import PageBase
+from .components.genres_component import Genres_Component
 
 
 class HomePage(PageBase):

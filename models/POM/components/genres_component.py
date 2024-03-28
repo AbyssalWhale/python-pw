@@ -1,5 +1,5 @@
 from playwright.sync_api import Page
-from Models.POM.components.ComponentBase import ComponentBase
+from models.POM.components.component_base import ComponentBase
 
 class Genres_Component(ComponentBase):
     def __init__(self, playwrightPage: Page, componentTitle: str):

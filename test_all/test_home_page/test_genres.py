@@ -2,8 +2,8 @@ import pytest
 from playwright.sync_api import expect
 
 import conftest
-from Models.API.Routes.games_routes import get_games
-from Models.API.Routes.genre_routes import get_genre
+from models.API.Routes.games_routes import get_games
+from models.API.Routes.genre_routes import get_genre
 
 @pytest.mark.regression
 @pytest.mark.parametrize("game_genre_name", ["Action", "Card"])

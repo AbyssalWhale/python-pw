@@ -1,5 +1,5 @@
 from playwright.sync_api import Page, expect
-from Models.POM.components.ComponentBase import ComponentBase
+from models.POM.components.component_base import ComponentBase
 
 
 class Table_Component(ComponentBase):

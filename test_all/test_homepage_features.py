@@ -2,7 +2,7 @@ import re
 from playwright.sync_api import Playwright, Page, expect
 
 import conftest
-from Models.POM.HomePage import HomePage
+from models.POM.home_page import HomePage
 import pytest
 
 

@@ -17,7 +17,7 @@ def test_homepage_can_be_opened(set_up):
     home_page = conftest.home_page
 
     # Assert
-    expect(home_page.p_Page).to_have_title(home_page.page_title)
+    expect(home_page.playw_page).to_have_title(home_page.page_title)
     expect(home_page.label_title_table).to_be_visible()
     expect(home_page.label_title_genres).to_be_visible()
 
@@ -38,4 +38,4 @@ def test_homepage_to_skip(playwright: Playwright):
     home_page = HomePage(page)
 
     # Assert
-    expect(home_page.p_Page).to_have_title(home_page.page_title)
+    expect(home_page.playw_page).to_have_title(home_page.page_title)

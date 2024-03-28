@@ -11,4 +11,4 @@ def test_game_can_be_searched(set_up, game_to_search):
         home_page.search_component.input_search_field(game_to_search)
 
         # Assert
-        expect(home_page.table_component.Get_CardsTitles()).to_contain_text([game_to_search])
+        expect(home_page.table_component.get_cards_titles()).to_contain_text([game_to_search])

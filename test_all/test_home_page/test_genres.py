@@ -15,7 +15,7 @@ def test_game_category_can_be_selected(set_up, api_request_context, game_genre_n
     genre_games_api = get_games(genre_id=test_genre['id'])["results"]
 
     # Act - Sort on UI
-    home_page.genre_component.click_genre_button(genreName=test_genre['name'])
+    home_page.genre_component.click_genre_button(genre_name=test_genre['name'])
 
     # Assert
     for game in genre_games_api:

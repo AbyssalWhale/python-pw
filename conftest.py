@@ -34,7 +34,7 @@ def set_up(one_time_set_up, playwright: Playwright):
     page = context.new_page()
     home_page = HomePage(page)
 
-    expect(home_page.p_Page).to_have_title(home_page.page_title)
+    expect(home_page.playw_page).to_have_title(home_page.page_title)
     expect(home_page.label_title_table).to_be_visible()
     expect(home_page.label_title_genres).to_be_visible()
 
@@ -42,7 +42,7 @@ def set_up(one_time_set_up, playwright: Playwright):
 
     yield conftest.home_page
 
-    conftest.home_page.p_Page.close()
+    conftest.home_page.playw_page.close()
     context.close()
     print(f"Video Record: {page.video.path()}")
 
@@ -61,7 +61,7 @@ def _init_Home_Page(playwright: Playwright):
     page = browser.new_page()
     home_page = HomePage(page)
 
-    expect(home_page.p_Page).to_have_title(home_page.page_title)
+    expect(home_page.playw_page).to_have_title(home_page.page_title)
     expect(home_page.label_title_table).to_be_visible()
     expect(home_page.label_title_genres).to_be_visible()
 

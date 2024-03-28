@@ -26,7 +26,7 @@ def one_time_set_up():
 
 @pytest.fixture(scope="session")
 def set_up(one_time_set_up, playwright: Playwright):
-    browser = playwright.chromium.launch(headless=False)
+    browser = playwright.chromium.launch(headless=True)
     context = browser.new_context(
         record_video_dir=f"{conftest.test_run_content_folder}/",
         record_video_size={"width": 640, "height": 480}

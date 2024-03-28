@@ -1,5 +1,5 @@
 import conftest
-from Models.POM.HomePage import HomePage
+from models.POM.home_page import HomePage
 from typing import Generator
 import json
 import os
@@ -7,7 +7,6 @@ from playwright.sync_api import expect
 from playwright.sync_api import Playwright, APIRequestContext
 from datetime import datetime
 import pytest
-
 
 test_run_config = None
 test_run_content_folder = None
@@ -18,9 +17,12 @@ home_page = None
 @pytest.fixture(scope="session", autouse=True)
 def one_time_set_up():
     _read_api_header()
-    conftest.test_run_content_folder = get_project_root() + '\\TestResults\\' + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    conftest.test_run_content_folder = os.path.join(
+        get_project_root(),
+        "TestResults")
     if not os.path.exists(conftest.test_run_content_folder):
-         os.makedirs(conftest.test_run_content_folder)
+        os.makedirs(conftest.test_run_content_folder, exist_ok=True)
+
 
 @pytest.fixture(scope="session")
 def set_up(one_time_set_up, playwright: Playwright):
@@ -33,7 +35,7 @@ def set_up(one_time_set_up, playwright: Playwright):
     page = context.new_page()
     home_page = HomePage(page)
 
-    expect(home_page.p_Page).to_have_title(home_page.page_title)
+    expect(home_page.playw_page).to_have_title(home_page.page_title)
     expect(home_page.label_title_table).to_be_visible()
     expect(home_page.label_title_genres).to_be_visible()
 
@@ -41,7 +43,7 @@ def set_up(one_time_set_up, playwright: Playwright):
 
     yield conftest.home_page
 
-    conftest.home_page.p_Page.close()
+    conftest.home_page.playw_page.close()
     context.close()
     print(f"Video Record: {page.video.path()}")
 
@@ -54,12 +56,13 @@ def api_request_context(playwright: Playwright) -> Generator[APIRequestContext, 
     yield conftest.api_request_context
     request_context.dispose()
 
+
 def _init_Home_Page(playwright: Playwright):
     browser = playwright.chromium.launch(headless=False)
     page = browser.new_page()
     home_page = HomePage(page)
 
-    expect(home_page.p_Page).to_have_title(home_page.page_title)
+    expect(home_page.playw_page).to_have_title(home_page.page_title)
     expect(home_page.label_title_table).to_be_visible()
     expect(home_page.label_title_genres).to_be_visible()
 
@@ -67,13 +70,18 @@ def _init_Home_Page(playwright: Playwright):
 
     yield home_page
 
+
 def _read_api_header():
-    full_File_Path = f'{get_project_root()}//configs//api_headers.json'
-    if os.path.exists(full_File_Path):
-        with open(full_File_Path) as f:
+
+    full_file_path = os.path.join(
+        get_project_root(),
+        "configs",
+        "api_headers.json")
+    if os.path.exists(full_file_path):
+        with open(full_file_path) as f:
             conftest.test_run_config = json.load(f)
     else:
-        raise Exception(f"Could not find file with api headers. Path: {full_File_Path}")
+        raise Exception(f"Could not find file with api headers. Path: {full_file_path}")
 
 
 def get_project_root():
